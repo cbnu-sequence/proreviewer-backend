@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class LoginRequestDto {
 
-	private String accessToken;
+	private String code;
 }

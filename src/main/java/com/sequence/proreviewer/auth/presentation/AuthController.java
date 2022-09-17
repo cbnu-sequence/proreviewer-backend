@@ -18,7 +18,7 @@ public class AuthController {
 
 	@PostMapping("/login/github")
 	public AuthTokens github(@RequestBody LoginRequestDto dto) {
-		return authService.github(dto.getAccessToken());
+		return authService.githubLogin(dto);
 	}
 
 }

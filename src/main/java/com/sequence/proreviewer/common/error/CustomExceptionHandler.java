@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class CustomExceptionHandler {
 
-	@ExceptionHandler(BaseException.class)
-	public ResponseEntity<ErrorResponse> ExceptionHandler(BaseException e) {
+	@ExceptionHandler(BaseCustomException.class)
+	public ResponseEntity<ErrorResponse> ExceptionHandler(BaseCustomException e) {
 		ErrorCode errorCode = e.getErrorCode();
 
 		log.error(errorCode.getMessage());

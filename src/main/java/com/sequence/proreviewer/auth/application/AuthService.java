@@ -1,6 +1,8 @@
 package com.sequence.proreviewer.auth.application;
 
 import com.google.gson.Gson;
+import com.sequence.proreviewer.auth.application.exception.InvalidAuthorizationCodeException;
+import com.sequence.proreviewer.auth.application.exception.InvalidGithubAccessTokenException;
 import com.sequence.proreviewer.auth.application.util.JwtProvider;
 import com.sequence.proreviewer.auth.domain.Auth;
 import com.sequence.proreviewer.auth.domain.Provider;
@@ -9,6 +11,7 @@ import com.sequence.proreviewer.auth.infra.repository.AuthRepository;
 import com.sequence.proreviewer.auth.infra.repository.UserRepository;
 import com.sequence.proreviewer.auth.presentation.dto.request.LoginRequestDto;
 import com.sequence.proreviewer.auth.presentation.dto.response.AuthTokens;
+import com.sequence.proreviewer.common.error.ErrorCode;
 import com.sequence.proreviewer.user.domain.User;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -39,8 +43,10 @@ public class AuthService {
 			dto.getCode()
 		);
 
-		UserInfo userInfo = this.getGithubUserInfo(env.getProperty("github.user-api.url"),
-			accessToken);
+		UserInfo userInfo = this.getGithubUserInfo(
+			env.getProperty("github.user-api.url"),
+			accessToken
+		);
 
 		Long loginUserId = login(userInfo);
 		return AuthTokens
@@ -56,7 +62,6 @@ public class AuthService {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.ACCEPT, "application/json");
-
 		HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
 
 		String urlTemplate = UriComponentsBuilder.fromHttpUrl(url)
@@ -71,21 +76,21 @@ public class AuthService {
 		params.put("clientSecret", clientSecret);
 		params.put("code", code);
 
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> res = restTemplate.exchange(
+		ResponseEntity<String> res = new RestTemplate().exchange(
 			urlTemplate,
 			HttpMethod.POST,
 			entity,
 			String.class,
 			params
 		);
+		HashMap<String, String> resMap = new Gson().fromJson(res.getBody(), HashMap.class);
 
-		Gson gson = new Gson();
-		System.out.println(gson.fromJson(res.getBody(), HashMap.class));
-		return gson
-			.fromJson(res.getBody(), HashMap.class)
-			.get("access_token")
-			.toString();
+		String err = resMap.get("error");
+		if (err != null) {
+			throw new InvalidAuthorizationCodeException();
+		}
+
+		return resMap.get("access_token");
 	}
 
 	private UserInfo getGithubUserInfo(String url, String code) {
@@ -93,16 +98,19 @@ public class AuthService {
 		headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + code);
 		HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
 
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> res = restTemplate.exchange(
-			url,
-			HttpMethod.GET,
-			entity,
-			String.class
-		);
+		ResponseEntity<String> res;
+		try {
+			res = new RestTemplate().exchange(
+				url,
+				HttpMethod.GET,
+				entity,
+				String.class
+			);
+		} catch (RestClientException e) {
+			throw new InvalidGithubAccessTokenException();
+		}
 
-		Gson gson = new Gson();
-		return gson.fromJson(res.getBody(), UserInfo.class);
+		return new Gson().fromJson(res.getBody(), UserInfo.class);
 	}
 
 	private Long login(UserInfo userInfo) {

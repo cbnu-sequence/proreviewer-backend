@@ -6,14 +6,13 @@ import com.sequence.proreviewer.posts.infra.repository.jpa.JpaPostsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor
 public class PostsRepositoryImpl implements PostsRepository {
 
-    private final JpaPostsRepository postsRepository;
+    JpaPostsRepository postsRepository;
 
     @Override
     public void savePosts(Posts posts) {
@@ -28,15 +27,5 @@ public class PostsRepositoryImpl implements PostsRepository {
     @Override
     public Stream<Posts> getAllPosts() {
         return postsRepository.findAllDesc();
-    }
-
-    @Override
-    public Optional<Posts> findById(Long id) {
-        return postsRepository.findById(id);
-    }
-
-    @Override
-    public void deletePosts(Long id) {
-        postsRepository.delete(postsRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 }

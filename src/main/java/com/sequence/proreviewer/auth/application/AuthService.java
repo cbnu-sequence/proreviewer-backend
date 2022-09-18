@@ -49,11 +49,64 @@ public class AuthService {
 		);
 
 		Long loginUserId = login(userInfo);
-		return AuthTokens
-			.builder()
+		return AuthTokens.builder()
 			.accessToken(jwtProvider.accessToken(String.valueOf(loginUserId)))
 			.refreshToken(UUID.randomUUID().toString())
 			.build();
+	}
+
+	public AuthTokens googleLogin(LoginRequestDto dto) {
+		String accessToken = this.getGoogleAccessToken(
+			env.getProperty("google.access-token.url"),
+			dto.getCode()
+		);
+
+		UserInfo userInfo = this.getGoogleUserInfo(env.getProperty("google.user-api.url"), accessToken);
+
+		Long loginUserId = login(userInfo);
+		return AuthTokens.builder()
+			.accessToken(jwtProvider.accessToken(String.valueOf(loginUserId)))
+			.refreshToken(UUID.randomUUID().toString())
+			.build();
+	}
+
+	private String getGoogleAccessToken(String url, String code) {
+		String clientId = env.getProperty("google.client-id");
+		String clientSecret = env.getProperty("google.client-secret");
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.ACCEPT, "application/json");
+		HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
+
+		String urlTemplate = UriComponentsBuilder.fromHttpUrl(url)
+			.queryParam("client_id", "{clientId}")
+			.queryParam("client_secret", "{clientSecret}")
+			.queryParam("code", "{code}")
+			.queryParam("redirect_uri", "{redirectUri}")
+			.queryParam("grant_type", "{grantType}")
+			.encode()
+			.toUriString();
+
+		Map<String, String> params = new HashMap<>();
+		params.put("clientId", clientId);
+		params.put("clientSecret", clientSecret);
+		params.put("code", code);
+		params.put("grantType", "authorization_code");
+		params.put("redirectUri", env.getProperty("google.redirect-uri"));
+
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> res = restTemplate.exchange(
+			urlTemplate,
+			HttpMethod.POST,
+			entity,
+			String.class,
+			params
+		);
+
+		return new Gson()
+			.fromJson(res.getBody(), HashMap.class)
+			.get("access_token")
+			.toString();
 	}
 
 	private String getGithubAccessToken(String url, String code) {
@@ -93,9 +146,9 @@ public class AuthService {
 		return resMap.get("access_token");
 	}
 
-	private UserInfo getGithubUserInfo(String url, String code) {
+	private UserInfo getGithubUserInfo(String url, String accessToken) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + code);
+		headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
 		HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
 
 		ResponseEntity<String> res;
@@ -109,6 +162,21 @@ public class AuthService {
 		} catch (RestClientException e) {
 			throw new InvalidGithubAccessTokenException();
 		}
+
+		return new Gson().fromJson(res.getBody(), UserInfo.class);
+	}
+
+	private UserInfo getGoogleUserInfo(String url, String accessToken) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+		HttpEntity<HttpHeaders> entity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> res = new RestTemplate().exchange(
+			url,
+			HttpMethod.GET,
+			entity,
+			String.class
+		);
 
 		return new Gson().fromJson(res.getBody(), UserInfo.class);
 	}
@@ -133,6 +201,7 @@ public class AuthService {
 				.build();
 			authRepository.saveAuth(auth);
 		}
+
 		return exUser.get().getId();
 	}
 }

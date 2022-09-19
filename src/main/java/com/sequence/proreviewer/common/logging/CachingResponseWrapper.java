@@ -1,4 +1,4 @@
-package com.sequence.proreviewer.util.interceptor.logging;
+package com.sequence.proreviewer.common.logging;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public class CachingResponseWrapper extends HttpServletResponseWrapper {
 		return this.content.getInputStream();
 	}
 
-	private class CachedServletOutputStream extends ServletOutputStream {
+	private static class CachedServletOutputStream extends ServletOutputStream {
 
 		private final TeeOutputStream targetStream;
 

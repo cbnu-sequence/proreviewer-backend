@@ -6,6 +6,7 @@ import com.sequence.proreviewer.posts.infra.repository.PostsRepository;
 import com.sequence.proreviewer.posts.dto.PostsRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,10 +26,30 @@ public class PostsService {
         return (posts.getId());
     }
 
-    @Transactional
-    public List<PostsResponseDto> getAllPosts() { //모든 포스트 조회
+    @Transactional //모든 포스트 조회
+    public List<PostsResponseDto> getAllPosts() {
         return postsRepository.getAllPosts()
                 .map(PostsResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional //포스트 id로 포스트 조회
+    public PostsResponseDto findById(Long id){
+        Posts posts = postsRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return PostsResponseDto.builder()
+                .entity(posts)
+                .build();
+    }
+
+    @Transactional //포스트 수정
+    public void editPosts(Long id, String newTitle, String newBody){
+        Posts posts = postsRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        posts.updatePosts(newTitle, newBody);
+        postsRepository.editPosts(posts);
+    }
+
+    @Transactional //포스트 삭제
+    public void deletePosts(Long id){
+        postsRepository.deletePosts(id);
     }
 }

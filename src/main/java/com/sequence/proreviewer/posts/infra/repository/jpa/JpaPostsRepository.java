@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 
 public interface JpaPostsRepository extends JpaRepository<Posts, Long> {
 
-    @Query("SELECT p"+
-            "FROM Posts p"+
+    @Query("SELECT p " +
+            "FROM Posts p " +
             "ORDER BY p.id DESC")
     Stream<Posts> findAllDesc();
 }

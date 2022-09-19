@@ -1,6 +1,6 @@
-package com.sequence.proreviewer.util.interceptor.logging;
+package com.sequence.proreviewer.common.logging;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +13,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class HttpLoggingInterceptor implements HandlerInterceptor {
 
-	private final ObjectMapper objectMapper;
-
-	public HttpLoggingInterceptor(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
+	private String method;
+	private String url;
 
 	@Override
 	public boolean preHandle(
@@ -26,11 +23,13 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 		Object handler
 	) throws Exception {
 		if (isCachingRequestWrapper(request)) {
-			String req = IOUtils.toString(
+			this.method = request.getMethod();
+			this.url = request.getRequestURI();
+			String body = IOUtils.toString(
 				request.getInputStream(),
 				request.getCharacterEncoding()
 			);
-			log.info("request - {}", req);
+			log.info("request - {} {} ::: {}", method, url, body);
 		}
 		return true;
 	}
@@ -43,11 +42,11 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 		@Nullable Exception ex
 	) throws Exception {
 		if (isCachingResponseWrapper(response)) {
-			String res = IOUtils.toString(
+			String body = IOUtils.toString(
 				((CachingResponseWrapper) response).getContentInputStream(),
 				response.getCharacterEncoding()
 			);
-			log.info("response - {}", res);
+			log.info("response - {} {} ::: {}", method, url, body);
 		}
 	}
 

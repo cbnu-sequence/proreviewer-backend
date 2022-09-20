@@ -5,6 +5,7 @@ import com.sequence.proreviewer.user.presentation.dto.request.UserUpdateRequestD
 import com.sequence.proreviewer.user.presentation.dto.response.UserResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,5 +34,10 @@ public class UserController {
 	@PutMapping("/{id}")
 	public void updateById(@PathVariable Long id, @RequestBody UserUpdateRequestDto dto) {
 		userService.updateById(id, dto);
+	}
+
+	@DeleteMapping("/{id}")
+	public void deleteById(@PathVariable Long id) {
+		userService.deleteById(id);
 	}
 }

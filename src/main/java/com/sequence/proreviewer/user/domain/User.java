@@ -1,12 +1,16 @@
 package com.sequence.proreviewer.user.domain;
 
+import com.sequence.proreviewer.auth.domain.Auth;
 import com.sequence.proreviewer.user.presentation.dto.request.UserUpdateRequestDto;
 import com.sequence.proreviewer.user.presentation.dto.response.UserResponseDto;
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,6 +31,9 @@ public class User {
 	private String name;
 
 	private String description;
+
+	@OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE})
+	private List<Auth> auths;
 
 	@Builder
 	public User(String email) {
@@ -50,5 +57,9 @@ public class User {
 	public void update(UserUpdateRequestDto dto) {
 		this.name = dto.getName();
 		this.description = dto.getDescription();
+	}
+
+	public void withdrawal() {
+		this.auths = null;
 	}
 }

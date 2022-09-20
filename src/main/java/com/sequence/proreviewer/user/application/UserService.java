@@ -39,4 +39,10 @@ public class UserService {
 			}
 		);
 	}
+
+	public void deleteById(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		optionalUser.orElseThrow(UserNotFoundException::new);
+		userRepository.deleteById(id);
+	}
 }

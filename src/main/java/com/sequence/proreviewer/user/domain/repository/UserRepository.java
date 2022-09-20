@@ -1,2 +1,5 @@
-package com.sequence.proreviewer.user.domain.repository;public class UserRepository {
+package com.sequence.proreviewer.user.domain.repository;
+
+public interface UserRepository {
+
 }

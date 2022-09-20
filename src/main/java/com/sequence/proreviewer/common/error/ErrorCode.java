@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 	INVALID_GITHUB_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED.value(), "INVALID_GITHUB_ACCESS_TOKEN"),
-	INVALID_AUTHORIZATION_CODE(HttpStatus.UNAUTHORIZED.value(), "INVALID_AUTHORIZATION_CODE");
+	INVALID_AUTHORIZATION_CODE(HttpStatus.UNAUTHORIZED.value(), "INVALID_AUTHORIZATION_CODE"),
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "USER_NOT_FOUND");
 
 
 	private final int status;

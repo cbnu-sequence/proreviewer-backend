@@ -1,5 +1,6 @@
 package com.sequence.proreviewer.user.domain;
 
+import com.sequence.proreviewer.user.presentation.dto.response.UserResponseDto;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,5 +31,18 @@ public class User {
 	public User(String email) {
 		this.email = email;
 		this.name = UUID.randomUUID().toString();
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public UserResponseDto toResponseDto() {
+		return UserResponseDto.builder()
+			.id(this.id)
+			.email(this.email)
+			.name(this.name)
+			.description(this.description)
+			.build();
 	}
 }

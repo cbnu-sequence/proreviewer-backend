@@ -1,5 +1,6 @@
 package com.sequence.proreviewer.user.domain;
 
+import com.sequence.proreviewer.user.presentation.dto.request.UserUpdateRequestDto;
 import com.sequence.proreviewer.user.presentation.dto.response.UserResponseDto;
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -44,5 +45,10 @@ public class User {
 			.name(this.name)
 			.description(this.description)
 			.build();
+	}
+
+	public void update(UserUpdateRequestDto dto) {
+		this.name = dto.getName();
+		this.description = dto.getDescription();
 	}
 }

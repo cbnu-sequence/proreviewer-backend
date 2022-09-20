@@ -22,13 +22,13 @@ public class User {
 	private String email;
 
 	@NotNull
-	private String userName;
+	private String name;
 
 	private String description;
 
 	@Builder
 	public User(String email) {
 		this.email = email;
-		this.userName = UUID.randomUUID().toString();
+		this.name = UUID.randomUUID().toString();
 	}
 }

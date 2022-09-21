@@ -8,11 +8,10 @@ import com.sequence.proreviewer.auth.domain.Auth;
 import com.sequence.proreviewer.auth.domain.Provider;
 import com.sequence.proreviewer.auth.domain.UserInfo;
 import com.sequence.proreviewer.auth.infra.repository.AuthRepository;
-import com.sequence.proreviewer.auth.infra.repository.UserRepository;
 import com.sequence.proreviewer.auth.presentation.dto.request.LoginRequestDto;
 import com.sequence.proreviewer.auth.presentation.dto.response.AuthTokens;
-import com.sequence.proreviewer.common.error.ErrorCode;
 import com.sequence.proreviewer.user.domain.User;
+import com.sequence.proreviewer.user.domain.repository.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -61,7 +60,8 @@ public class AuthService {
 			dto.getCode()
 		);
 
-		UserInfo userInfo = this.getGoogleUserInfo(env.getProperty("google.user-api.url"), accessToken);
+		UserInfo userInfo = this.getGoogleUserInfo(env.getProperty("google.user-api.url"),
+			accessToken);
 
 		Long loginUserId = login(userInfo);
 		return AuthTokens.builder()
@@ -188,7 +188,7 @@ public class AuthService {
 				.builder()
 				.email(userInfo.getEmail())
 				.build();
-			exUser = Optional.ofNullable(userRepository.saveUser(user));
+			exUser = Optional.ofNullable(userRepository.save(user));
 		}
 
 		Optional<Auth> exAuth = this.authRepository.findByProviderKey(userInfo.getId());

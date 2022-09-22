@@ -44,6 +44,5 @@ public class Posts extends BaseTimeEntity {
     public void updatePosts(PostUpdateDto dto){
         this.title= dto.getTitle();
         this.body=dto.getBody();
-
     }
 }

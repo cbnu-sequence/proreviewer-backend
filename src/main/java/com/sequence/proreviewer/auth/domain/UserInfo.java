@@ -8,4 +8,8 @@ public class UserInfo {
 	private String id;
 	private String name;
 	private String email;
+
+	public String getProviderKey() {
+		return this.id;
+	}
 }

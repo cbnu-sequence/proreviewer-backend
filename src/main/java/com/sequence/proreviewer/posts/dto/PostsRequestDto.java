@@ -1,9 +1,8 @@
 package com.sequence.proreviewer.posts.dto;
 
 import com.sequence.proreviewer.posts.domain.Posts;
+import com.sequence.proreviewer.user.domain.User;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,6 +11,7 @@ public class PostsRequestDto {
     private String title;
     private String body;
     private String user_name;
+    private User user;
 
     @Builder
     public PostsRequestDto(String title, String body, String user_name){
@@ -25,6 +25,7 @@ public class PostsRequestDto {
                 .title(title)
                 .body(body)
                 .user_name(user_name)
+                .user(user)
                 .build();
 
         return posts;

@@ -1,41 +1,49 @@
 package com.sequence.proreviewer.posts.controller;
 
+import com.sequence.proreviewer.posts.dto.PostUpdateDto;
 import com.sequence.proreviewer.posts.dto.PostsResponseDto;
 import com.sequence.proreviewer.posts.dto.PostsRequestDto;
 import com.sequence.proreviewer.posts.service.PostsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
+@RequestMapping("/posts")
 public class PostsRestController {
-    private PostsService postsService;
+    private final PostsService postsService;
 
-    @GetMapping("/posts") //모든 포스트 조회
+    @GetMapping//모든 포스트 조회
     public List<PostsResponseDto> getAllPosts(){
         return postsService.getAllPosts();
     }
 
-    @GetMapping("/posts/{id}") //게시글 id로 게시글 조회
-    public PostsResponseDto findById(@PathVariable Long id){
-        return postsService.findById(id);
+    @GetMapping("/{id}") //게시글 id로 게시글 조회
+    public PostsResponseDto findById(@PathVariable Long id /*로그인 유저 정보*/){
+        PostsResponseDto postsResponseDto = postsService.findById(id);
+
+//        if(user.getId()==postsResponseDto.getId()){
+//            postsResponseDto.setWriter(true);
+//        } //게시글 조회시 유저 정보 가져와서 작성자이면 true로 변경
+
+        return postsResponseDto;
     }
 
-    @PostMapping("/posts/write") //글 작성
-    public void savePosts(@RequestBody PostsRequestDto dto){
-        postsService.write(dto);
+    @PostMapping("/write") //글 작성
+    public void savePosts(@RequestBody PostsRequestDto dto /*로그인 유저 정보*/){
+        postsService.write(dto, "email"); //email 주소 입력
     }
 
-    @PutMapping("posts/edit/{id}") //게시글 수정
-    public void editPosts(@PathVariable Long id, @RequestBody Map<String, String> map){
-        postsService.editPosts(id, map.get("title"), map.get("body"));
+    @PutMapping("/edit/{id}") //게시글 수정
+    public void editPosts(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto /*, 로그인 유저 정보*/){
+        postUpdateDto.setEmail("email"); //현재 로그인된 유저 이메일 주소
+        postsService.editPosts(id, postUpdateDto);
     }
 
-    @DeleteMapping("posts/delete/{id}") //게시글 삭제
-    public void deletePosts(@PathVariable Long id){
-        postsService.deletePosts(id);
+    @DeleteMapping("/delete/{id}") //게시글 삭제
+    public void deletePosts(@PathVariable Long id /*, 로그인 유저 정보*/){
+        postsService.deletePosts(id, "email"); //email 주소 입력
     }
 }

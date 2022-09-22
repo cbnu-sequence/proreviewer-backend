@@ -7,15 +7,18 @@ import com.sequence.proreviewer.posts.dto.PostsRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class PostsService {
-    private PostsRepository postsRepository;
+    private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     @Transactional  //post 작성
     public Long write(PostsRequestDto postsRequestDto){
@@ -51,5 +54,23 @@ public class PostsService {
     @Transactional //포스트 삭제
     public void deletePosts(Long id){
         postsRepository.deletePosts(id);
+    }
+
+    @Transactional
+    public List<PostsResponseDto> searchPost(String type, String keyword){
+
+        if(type.equalsIgnoreCase("title")){
+            return postsRepository.findByTitleContaining(keyword)
+                    .map(PostsResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+        else if(type.equalsIgnoreCase("body")){
+            return postsRepository.findByBodyContaining(keyword)
+                    .map(PostsResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.sequence.proreviewer.posts.infra.repository.jpa.JpaPostsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -43,5 +44,15 @@ public class PostsRepositoryImpl implements PostsRepository {
     @Override
     public void deletePosts(Long id) {
         postsRepository.delete(postsRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    }
+
+    @Override
+    public Stream<Posts> findByTitleContaining(String keyword) {
+        return postsRepository.findByTitleContaining(keyword);
+    }
+
+    @Override
+    public Stream<Posts> findByBodyContaining(String keyword) {
+        return postsRepository.findByBodyContaining(keyword);
     }
 }

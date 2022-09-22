@@ -38,4 +38,10 @@ public class PostsRestController {
     public void deletePosts(@PathVariable Long id){
         postsService.deletePosts(id);
     }
+
+    @GetMapping("/search")
+    public List<PostsResponseDto> searchPost(@RequestParam("type") String type,
+                                             @RequestParam("keyword") String keyword){
+        return postsService.searchPost(type, keyword);
+    }
 }

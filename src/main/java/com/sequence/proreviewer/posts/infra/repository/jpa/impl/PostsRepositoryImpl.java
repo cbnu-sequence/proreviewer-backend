@@ -36,11 +36,6 @@ public class PostsRepositoryImpl implements PostsRepository {
     }
 
     @Override
-    public void editPosts(Posts posts) {
-        postsRepository.save(posts);
-    }
-
-    @Override
     public void deletePosts(Long id) {
         postsRepository.delete(postsRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }

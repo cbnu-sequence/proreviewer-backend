@@ -14,7 +14,5 @@ public interface PostsRepository {
 
     Optional<Posts> findById(Long id);
 
-    void editPosts(Posts posts);
-
     void deletePosts(Long id);
 }

@@ -1,4 +1,4 @@
-package com.sequence.proreviewer.posts.domain;
+package com.sequence.proreviewer.posts.common.timeEntity;
 
 import lombok.Getter;
 import net.bytebuddy.asm.Advice;

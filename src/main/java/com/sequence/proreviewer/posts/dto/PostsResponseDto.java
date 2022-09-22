@@ -17,6 +17,8 @@ public class PostsResponseDto {
     private LocalDateTime created_at;
     private LocalDateTime modified_at;
 
+    private boolean isWriter = false;
+
     @Builder
     public PostsResponseDto(Posts entity){
         this.id= entity.getId();
@@ -25,5 +27,9 @@ public class PostsResponseDto {
         this.user_name= entity.getUser_name();
         this.created_at=entity.getCreated_at();
         this.modified_at=entity.getModified_at();
+    }
+
+    public void setWriter(boolean writer) {
+        isWriter = writer;
     }
 }

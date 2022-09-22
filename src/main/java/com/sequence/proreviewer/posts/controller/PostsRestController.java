@@ -46,4 +46,10 @@ public class PostsRestController {
     public void deletePosts(@PathVariable Long id /*, 로그인 유저 정보*/){
         postsService.deletePosts(id, "email"); //email 주소 입력
     }
+
+    @GetMapping("/search")
+    public List<PostsResponseDto> searchPost(@RequestParam("type") String type,
+                                             @RequestParam("keyword") String keyword){
+        return postsService.searchPost(type, keyword);
+    }
 }

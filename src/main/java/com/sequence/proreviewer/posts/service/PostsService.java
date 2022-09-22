@@ -13,8 +13,10 @@ import com.sequence.proreviewer.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,8 +24,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class PostsService {
-    private PostsRepository postsRepository;
-    private UserRepository userRepository;
+    private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     @Transactional  //post 작성
     public Long write(PostsRequestDto postsRequestDto, String email){
@@ -87,5 +89,23 @@ public class PostsService {
                         throw new PostNotFoundException();
                     }
         );
+    }
+
+    @Transactional
+    public List<PostsResponseDto> searchPost(String type, String keyword){
+
+        if(type.equalsIgnoreCase("title")){
+            return postsRepository.findByTitleContaining(keyword)
+                    .map(PostsResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+        else if(type.equalsIgnoreCase("body")){
+            return postsRepository.findByBodyContaining(keyword)
+                    .map(PostsResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 }

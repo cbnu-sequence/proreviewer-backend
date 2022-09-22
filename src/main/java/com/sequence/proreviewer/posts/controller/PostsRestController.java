@@ -48,7 +48,7 @@ public class PostsRestController {
     }
 
     @GetMapping("/search")
-    public List<PostsResponseDto> searchPost(@RequestParam("type") String type,
+    public List<PostsResponseDto> searchPost(@RequestParam("type") int type,
                                              @RequestParam("keyword") String keyword){
         return postsService.searchPost(type, keyword);
     }

@@ -24,7 +24,7 @@ public class PostsResponseDto {
         this.id= entity.getId();
         this.title=entity.getTitle();
         this.body= entity.getBody();
-        this.user_name= entity.getUser_name();
+        this.user_name= entity.getUserName();
         this.created_at=entity.getCreated_at();
         this.modified_at=entity.getModified_at();
     }

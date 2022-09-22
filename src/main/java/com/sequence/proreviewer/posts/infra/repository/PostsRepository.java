@@ -21,4 +21,6 @@ public interface PostsRepository {
     Stream<Posts> findByTitleContaining(String keyword);
 
     Stream<Posts> findByBodyContaining(String keyword);
+
+    Stream<Posts> findByUsernameContaining(String keyword);
 }

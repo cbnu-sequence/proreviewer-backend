@@ -92,15 +92,21 @@ public class PostsService {
     }
 
     @Transactional
-    public List<PostsResponseDto> searchPost(String type, String keyword){
+    public List<PostsResponseDto> searchPost(int type, String keyword){
+                                    //type : 1 제목, 2 본문, 3 작성자
 
-        if(type.equalsIgnoreCase("title")){
+        if(type==1){
             return postsRepository.findByTitleContaining(keyword)
                     .map(PostsResponseDto::new)
                     .collect(Collectors.toList());
         }
-        else if(type.equalsIgnoreCase("body")){
+        else if(type==2){
             return postsRepository.findByBodyContaining(keyword)
+                    .map(PostsResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+        else if(type==3){
+            return postsRepository.findByUsernameContaining(keyword)
                     .map(PostsResponseDto::new)
                     .collect(Collectors.toList());
         }

@@ -27,7 +27,7 @@ public class Posts extends BaseTimeEntity {
     private String body;
 
     @NotNull
-    private String user_name;
+    private String userName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -37,7 +37,7 @@ public class Posts extends BaseTimeEntity {
     public Posts(String title, String body, String user_name, User user){
         this.title=title;
         this.body=body;
-        this.user_name=user_name;
+        this.userName=user_name;
         this.user=user;
     }
 

@@ -50,4 +50,9 @@ public class PostsRepositoryImpl implements PostsRepository {
     public Stream<Posts> findByBodyContaining(String keyword) {
         return postsRepository.findByBodyContaining(keyword);
     }
+
+    @Override
+    public Stream<Posts> findByUsernameContaining(String keyword) {
+        return postsRepository.findByUserNameContaining(keyword);
+    }
 }

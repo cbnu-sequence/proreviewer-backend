@@ -18,4 +18,6 @@ public interface JpaPostsRepository extends JpaRepository<Posts, Long> {
     Stream<Posts> findByTitleContaining(String keyword);
 
     Stream<Posts> findByBodyContaining(String keyword);
+
+    Stream<Posts>findByUserNameContaining(String keyword);
 }

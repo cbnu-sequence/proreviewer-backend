@@ -1,11 +1,5 @@
 package com.sequence.proreviewer.posts.domain;
 
-<<<<<<< HEAD
-import com.sequence.proreviewer.posts.common.timeEntity.BaseTimeEntity;
-import com.sequence.proreviewer.posts.dto.PostUpdateDto;
-import com.sequence.proreviewer.user.domain.User;
-=======
->>>>>>> d7d9216 (도메인 코드 추가)
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,13 +24,14 @@ public class Posts extends BaseTimeEntity{
     private String body;
 
     @NotNull
-    private String user_name;
+    private String userName;
 
     @Builder
     public Posts(String title, String body, String user_name){
         this.title=title;
         this.body=body;
-        this.user_name=user_name;
+        this.userName=user_name;
+        this.user=user;
     }
 
     public void updatePosts(String title, String body){

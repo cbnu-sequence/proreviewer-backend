@@ -32,7 +32,7 @@ public class User {
 
 	private String description;
 
-	@OneToMany(mappedBy = "userId", cascade = {CascadeType.REMOVE})
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
 	private List<Auth> auths;
 
 	@Builder

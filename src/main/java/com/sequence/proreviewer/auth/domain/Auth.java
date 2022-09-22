@@ -24,7 +24,7 @@ public class Auth {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private User userId;
+	private User user;
 
 	@NotNull
 	private String providerKey;
@@ -34,8 +34,8 @@ public class Auth {
 	private Provider provider;
 
 	@Builder
-	public Auth(User userId, String providerKey, Provider provider) {
-		this.userId = userId;
+	public Auth(User user, String providerKey, Provider provider) {
+		this.user = user;
 		this.providerKey = providerKey;
 		this.provider = provider;
 	}

@@ -1,4 +1,4 @@
-package com.sequence.proreviewer.posts.common.exception;
+package com.sequence.proreviewer.post.common.exception;
 
 import com.sequence.proreviewer.common.error.BaseCustomException;
 import com.sequence.proreviewer.common.error.ErrorCode;

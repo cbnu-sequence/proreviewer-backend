@@ -1,4 +1,4 @@
-package com.sequence.proreviewer.posts.dto;
+package com.sequence.proreviewer.post.dto;
 
 import lombok.*;
 

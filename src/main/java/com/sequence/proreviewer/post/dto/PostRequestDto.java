@@ -1,33 +1,33 @@
-package com.sequence.proreviewer.posts.dto;
+package com.sequence.proreviewer.post.dto;
 
-import com.sequence.proreviewer.posts.domain.Posts;
+import com.sequence.proreviewer.post.domain.Post;
 import com.sequence.proreviewer.user.domain.User;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostsRequestDto {
+public class PostRequestDto {
     private String title;
     private String body;
     private String user_name;
     private User user;
 
     @Builder
-    public PostsRequestDto(String title, String body, String user_name){
+    public PostRequestDto(String title, String body, String user_name){
         this.title=title;
         this.body=body;
         this.user_name=user_name;
     }
 
-    public Posts toEntity(){
-        Posts posts = Posts.builder()
+    public Post toEntity(){
+        Post post = Post.builder()
                 .title(title)
                 .body(body)
                 .user_name(user_name)
                 .user(user)
                 .build();
 
-        return posts;
+        return post;
     }
 }

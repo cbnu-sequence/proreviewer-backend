@@ -1,7 +1,7 @@
-package com.sequence.proreviewer.posts.domain;
+package com.sequence.proreviewer.post.domain;
 
-import com.sequence.proreviewer.posts.common.timeEntity.BaseTimeEntity;
-import com.sequence.proreviewer.posts.dto.PostUpdateDto;
+import com.sequence.proreviewer.post.common.timeEntity.BaseTimeEntity;
+import com.sequence.proreviewer.post.dto.PostUpdateDto;
 import com.sequence.proreviewer.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-public class Posts extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +30,18 @@ public class Posts extends BaseTimeEntity {
     private String userName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     User user;
 
     @Builder
-    public Posts(String title, String body, String user_name, User user){
+    public Post(String title, String body, String user_name, User user){
         this.title=title;
         this.body=body;
         this.userName=user_name;
         this.user=user;
     }
 
-    public void updatePosts(PostUpdateDto dto){
+    public void updatePost(PostUpdateDto dto){
         this.title= dto.getTitle();
         this.body=dto.getBody();
     }

@@ -12,11 +12,12 @@ import com.sequence.proreviewer.user.domain.User;
 import com.sequence.proreviewer.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Service
@@ -39,13 +40,22 @@ public class PostService {
     }
 
     //모든 포스트 조회
+    @Transactional(readOnly = true)
     public List<PostResponseDto> getAllPosts() {
-        return postRepository.getAllPosts()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
+
+        List<PostResponseDto> postResponseDtoList;
+
+        try(Stream<Post> postStream = postRepository.getAllPosts()){
+            postResponseDtoList = postStream
+                    .map(PostResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+
+        return postResponseDtoList;
     }
 
     //포스트 id로 포스트 조회
+    @Transactional(readOnly = true)
     public PostResponseDto findById(Long id){
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
 
@@ -88,24 +98,31 @@ public class PostService {
         );
     }
 
-    @Transactional
+    //포스트 검색
+    @Transactional(readOnly = true)
     public List<PostResponseDto> searchPost(int type, String keyword){
                                     //type : 1 제목, 2 본문, 3 작성자
 
         if(type==1){
-            return postRepository.findByTitleContaining(keyword)
-                    .map(PostResponseDto::new)
-                    .collect(Collectors.toList());
+            try(Stream<Post> postStream = postRepository.findByTitleContaining(keyword)){
+                return postStream
+                        .map(PostResponseDto::new)
+                        .collect(Collectors.toList());
+            }
         }
         else if(type==2){
-            return postRepository.findByBodyContaining(keyword)
-                    .map(PostResponseDto::new)
-                    .collect(Collectors.toList());
+            try(Stream<Post> postStream = postRepository.findByBodyContaining(keyword)){
+                return postStream
+                        .map(PostResponseDto::new)
+                        .collect(Collectors.toList());
+            }
         }
         else if(type==3){
-            return postRepository.findByUsernameContaining(keyword)
-                    .map(PostResponseDto::new)
-                    .collect(Collectors.toList());
+            try(Stream<Post> postStream = postRepository.findByUsernameContaining(keyword)){
+                return postStream
+                        .map(PostResponseDto::new)
+                        .collect(Collectors.toList());
+            }
         }
         else{
             throw new IllegalArgumentException();

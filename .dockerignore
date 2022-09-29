@@ -1,0 +1,15 @@
+# Git & Github
+.git
+.github
+
+# IDE
+.idea
+
+# Build
+build
+.gradle
+
+# Deploy
+dockerfile
+docker-compose-*.yml
+mysql/data

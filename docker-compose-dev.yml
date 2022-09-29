@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  proreviewer-back:
+    image: ckyeon/proreviewer-back:dev
+    container_name: proreviewer-back
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - proreviewer-db
+
+    restart: always
+
+
+  proreviewer-db:
+    image: mysql
+    container_name: proreviewer-db
+
+    ports:
+      - "8306:3306"
+
+    command: --init-file /data/application/init.sql
+
+    volumes:
+      - ./mysql/init.sql:/data/application/init.sql
+      - ./mysql/data:/var/lib/mysql
+
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: pro_reviewer
+
+    restart: always

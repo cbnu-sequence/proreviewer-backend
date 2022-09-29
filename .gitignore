@@ -1,5 +1,8 @@
 HELP.md
 
+# Dev DB files
+mysql/data
+
 # Secret files
 secrets.properties
 

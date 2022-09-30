@@ -4,7 +4,7 @@ import com.sequence.proreviewer.auth.application.util.JwtProvider;
 import com.sequence.proreviewer.auth.domain.Auth;
 import com.sequence.proreviewer.auth.domain.Provider;
 import com.sequence.proreviewer.auth.domain.UserInfo;
-import com.sequence.proreviewer.auth.infra.repository.AuthRepository;
+import com.sequence.proreviewer.auth.domain.repository.AuthRepository;
 import com.sequence.proreviewer.auth.presentation.dto.request.LoginRequestDto;
 import com.sequence.proreviewer.auth.presentation.dto.response.AuthTokens;
 import com.sequence.proreviewer.user.domain.User;
@@ -31,8 +31,7 @@ public class AuthService {
 			createAuth(user, userInfo, provider);
 		}
 
-		return AuthTokens
-			.builder()
+		return AuthTokens.builder()
 			.accessToken(createAccessToken(user.getId()))
 			.refreshToken(createRefreshToken())
 			.build();

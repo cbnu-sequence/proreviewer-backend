@@ -1,4 +1,4 @@
-package com.sequence.proreviewer.auth.infra.repository.jpa;
+package com.sequence.proreviewer.auth.infra.jpa;
 
 import com.sequence.proreviewer.auth.domain.Auth;
 import java.util.Optional;

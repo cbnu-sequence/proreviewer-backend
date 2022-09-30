@@ -1,8 +1,8 @@
-package com.sequence.proreviewer.auth.infra.repository.jpa.impl;
+package com.sequence.proreviewer.auth.infra.jpa.impl;
 
 import com.sequence.proreviewer.auth.domain.Auth;
-import com.sequence.proreviewer.auth.infra.repository.AuthRepository;
-import com.sequence.proreviewer.auth.infra.repository.jpa.JpaAuthRepository;
+import com.sequence.proreviewer.auth.domain.repository.AuthRepository;
+import com.sequence.proreviewer.auth.infra.jpa.JpaAuthRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

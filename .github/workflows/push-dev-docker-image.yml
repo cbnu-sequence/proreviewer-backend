@@ -19,7 +19,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Create secrets.properties
-        run: echo "${{ secrets.DEV_SECRETS_PROPERTIES }}" > ./src/main/resources/secrets.properties
+        run: |
+          cd ./src/main/resources
+          touch ./secrets.properties
+          echo "${{ secrets.DEV_SECRETS_PROPERTIES }}" > ./secrets.properties
         shell: bash
       -
         name: Build and Push

@@ -34,8 +34,4 @@ jobs:
           path: src/main/resources/secrets.properties
       -
         name: Build and Push
-        uses: docker/build-push-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/proreviewer-back:dev
+        run: docker buildx build . --push --tag ${{ secrets.DOCKERHUB_USERNAME }}/proreviewer-back:dev

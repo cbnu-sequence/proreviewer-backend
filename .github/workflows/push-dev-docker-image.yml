@@ -28,4 +28,9 @@ jobs:
         run: echo "${{ secrets.DEV_SECRETS_PROPERTIES }}" > src/main/resources/secrets.properties
       -
         name: Build and Push
-        run: docker buildx build . --push --tag ${{ secrets.DOCKERHUB_USERNAME }}/proreviewer-back:dev
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/proreviewer-back:dev

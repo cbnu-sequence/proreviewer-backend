@@ -26,6 +26,8 @@ jobs:
       -
         name: Create secrets.properties
         run: echo "${{ secrets.DEV_SECRETS_PROPERTIES }}" > src/main/resources/secrets.properties
+      -
+        name: Cache secrets.properties
         uses: actions/upload-artifact@v3
         with:
           name: secrets.properties

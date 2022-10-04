@@ -25,9 +25,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Create secrets.properties
-        run: |
-          printf "${{ secrets.DEV_SECRETS_PROPERTIES }}" >> src/main/resources/secrets.properties
-        shell: bash
+        run: echo "${{ secrets.DEV_SECRETS_PROPERTIES }}" > src/main/resources/secrets.properties
+        uses: actions/upload-artifact@v3
+        with:
+          name: secrets.properties
+          path: src/main/resources/secrets.properties
       -
         name: Build and Push
         uses: docker/build-push-action@v3

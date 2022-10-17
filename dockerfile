@@ -1,4 +1,4 @@
-FROM gradle:7.5.1-jdk18 AS builder
+FROM gradle:7.5.1-jdk18-alpine AS builder
 
 WORKDIR /
 
@@ -14,7 +14,7 @@ COPY . .
 RUN gradle clean build --no-daemon -x test
 
 
-FROM openjdk:20-jdk
+FROM openjdk:20-jdk-slim
 
 COPY --from=builder /build/libs/*SNAPSHOT.jar app.jar
 

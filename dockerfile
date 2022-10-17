@@ -1,4 +1,4 @@
-FROM gradle:7.5.1-jdk18-alpine AS builder
+FROM gradle:7.5.1-jdk18 AS builder
 
 WORKDIR /
 

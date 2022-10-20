@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaAuthRepository extends JpaRepository<Auth, Long> {
 
-	Optional<Auth> findByProviderKey(String key);
+    Optional<Auth> findByProviderKey(String key);
 }

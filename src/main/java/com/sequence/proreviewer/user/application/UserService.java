@@ -15,34 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	public List<UserResponseDto> findAll() {
-		List<User> users = userRepository.findAll();
-		return users.stream()
-			.map(User::toResponseDto)
-			.toList();
-	}
+    public List<UserResponseDto> findAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+            .map(User::toResponseDto)
+            .toList();
+    }
 
-	public UserResponseDto findById(Long id) {
-		Optional<User> user = userRepository.findById(id);
-		return user.orElseThrow(UserNotFoundException::new).toResponseDto();
-	}
+    public UserResponseDto findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(UserNotFoundException::new).toResponseDto();
+    }
 
-	@Transactional
-	public void updateById(Long id, UserUpdateRequestDto dto) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		optionalUser.ifPresentOrElse(
-			user -> user.update(dto),
-			() -> {
-				throw new UserNotFoundException();
-			}
-		);
-	}
+    @Transactional
+    public void updateById(Long id, UserUpdateRequestDto dto) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        optionalUser.ifPresentOrElse(
+            user -> user.update(dto),
+            () -> {
+                throw new UserNotFoundException();
+            }
+        );
+    }
 
-	public void deleteById(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		optionalUser.orElseThrow(UserNotFoundException::new);
-		userRepository.deleteById(id);
-	}
+    public void deleteById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        optionalUser.orElseThrow(UserNotFoundException::new);
+        userRepository.deleteById(id);
+    }
 }

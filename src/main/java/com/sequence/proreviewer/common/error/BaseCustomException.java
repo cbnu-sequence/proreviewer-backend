@@ -4,10 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class BaseCustomException extends RuntimeException {
-	private final ErrorCode errorCode;
 
-	public BaseCustomException(ErrorCode e) {
-		super(e.getMessage());
-		errorCode = e;
-	}
+    private final ErrorCode errorCode;
+
+    public BaseCustomException(ErrorCode e) {
+        super(e.getMessage());
+        errorCode = e;
+    }
 }

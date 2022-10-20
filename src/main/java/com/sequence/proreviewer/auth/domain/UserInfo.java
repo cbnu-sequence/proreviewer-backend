@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class UserInfo {
 
-	private String id;
-	private String name;
-	private String email;
+    private String id;
+    private String name;
+    private String email;
 
-	public String getProviderKey() {
-		return this.id;
-	}
+    public String getProviderKey() {
+        return this.id;
+    }
 }

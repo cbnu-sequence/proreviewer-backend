@@ -5,7 +5,7 @@ import com.sequence.proreviewer.common.error.ErrorCode;
 
 public class UserNotFoundException extends BaseCustomException {
 
-	public UserNotFoundException() {
-		super(ErrorCode.USER_NOT_FOUND);
-	}
+    public UserNotFoundException() {
+        super(ErrorCode.USER_NOT_FOUND);
+    }
 }

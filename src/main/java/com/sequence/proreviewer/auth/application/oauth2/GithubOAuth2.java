@@ -19,91 +19,91 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class GithubOAuth2 extends OAuth2 {
 
-	private final Environment env;
+    private final Environment env;
 
-	@Override
-	ResponseEntity<String> requestAccessToken(
-		String code,
-		HttpEntity<HttpHeaders> headers,
-		String urlTemplate,
-		HashMap<String, String> params
-	) {
-		ResponseEntity<String> response = new RestTemplate().exchange(
-			urlTemplate,
-			HttpMethod.POST,
-			headers,
-			String.class,
-			params
-		);
+    @Override
+    ResponseEntity<String> requestAccessToken(
+        String code,
+        HttpEntity<HttpHeaders> headers,
+        String urlTemplate,
+        HashMap<String, String> params
+    ) {
+        ResponseEntity<String> response = new RestTemplate().exchange(
+            urlTemplate,
+            HttpMethod.POST,
+            headers,
+            String.class,
+            params
+        );
 
-		if (getErrorFromResponseBody(response.getBody()) != null) {
-			throw new InvalidAuthorizationCodeException();
-		}
+        if (getErrorFromResponseBody(response.getBody()) != null) {
+            throw new InvalidAuthorizationCodeException();
+        }
 
-		return response;
-	}
+        return response;
+    }
 
-	@Override
-	ResponseEntity<String> requestUserInfo(
-		String accessToken,
-		HttpEntity<HttpHeaders> headers,
-		String url
-	) {
-		try {
-			return new RestTemplate().exchange(
-				url,
-				HttpMethod.GET,
-				headers,
-				String.class
-			);
-		} catch (RestClientException e) {
-			throw new InvalidAccessTokenException();
-		}
-	}
+    @Override
+    ResponseEntity<String> requestUserInfo(
+        String accessToken,
+        HttpEntity<HttpHeaders> headers,
+        String url
+    ) {
+        try {
+            return new RestTemplate().exchange(
+                url,
+                HttpMethod.GET,
+                headers,
+                String.class
+            );
+        } catch (RestClientException e) {
+            throw new InvalidAccessTokenException();
+        }
+    }
 
-	@Override
-	String createRequestAccessTokenUrlTemplate(String requestUrl) {
-		return UriComponentsBuilder
-			.fromHttpUrl(requestUrl)
-			.queryParam("client_id", "{clientId}")
-			.queryParam("client_secret", "{clientSecret}")
-			.queryParam("code", "{code}")
-			.encode()
-			.toUriString();
-	}
+    @Override
+    String createRequestAccessTokenUrlTemplate(String requestUrl) {
+        return UriComponentsBuilder
+            .fromHttpUrl(requestUrl)
+            .queryParam("client_id", "{clientId}")
+            .queryParam("client_secret", "{clientSecret}")
+            .queryParam("code", "{code}")
+            .encode()
+            .toUriString();
+    }
 
-	@Override
-	HashMap<String, String> createRequestAccessTokenParams(String code) {
-		HashMap<String, String> params = new HashMap<>();
-		params.put("clientId", getClientId());
-		params.put("clientSecret", getClientSecret());
-		params.put("code", code);
-		return params;
-	}
+    @Override
+    HashMap<String, String> createRequestAccessTokenParams(String code) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("clientId", getClientId());
+        params.put("clientSecret", getClientSecret());
+        params.put("code", code);
+        return params;
+    }
 
-	@Override
-	String getAccessTokenRequestUrl() {
-		return env.getProperty("github.access-token.url");
-	}
+    @Override
+    String getAccessTokenRequestUrl() {
+        return env.getProperty("github.access-token.url");
+    }
 
-	@Override
-	String getUserInfoRequestUrl() {
-		return env.getProperty("github.user-api.url");
-	}
+    @Override
+    String getUserInfoRequestUrl() {
+        return env.getProperty("github.user-api.url");
+    }
 
-	@Override
-	String getClientId() {
-		return env.getProperty("github.client-id");
-	}
+    @Override
+    String getClientId() {
+        return env.getProperty("github.client-id");
+    }
 
-	@Override
-	String getClientSecret() {
-		return env.getProperty("github.client-secret");
-	}
+    @Override
+    String getClientSecret() {
+        return env.getProperty("github.client-secret");
+    }
 
-	private String getErrorFromResponseBody(String responseBody) {
-		return (String) new Gson()
-			.fromJson(responseBody, HashMap.class)
-			.get("error");
-	}
+    private String getErrorFromResponseBody(String responseBody) {
+        return (String) new Gson()
+            .fromJson(responseBody, HashMap.class)
+            .get("error");
+    }
 }

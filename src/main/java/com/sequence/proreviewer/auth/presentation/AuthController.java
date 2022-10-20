@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-	private final AuthService authService;
+    private final AuthService authService;
 
-	@PostMapping("/login/{provider}")
-	public AuthTokens login(@RequestBody LoginRequestDto dto, @PathVariable String provider) {
-		if (Provider.valueOf(provider.toUpperCase()) == Provider.GITHUB) {
-			return authService.login(Provider.GITHUB, dto);
-		}
-		return authService.login(Provider.GOOGLE, dto);
-	}
+    @PostMapping("/login/{provider}")
+    public AuthTokens login(@RequestBody LoginRequestDto dto, @PathVariable String provider) {
+        if (Provider.valueOf(provider.toUpperCase()) == Provider.GITHUB) {
+            return authService.login(Provider.GITHUB, dto);
+        }
+        return authService.login(Provider.GOOGLE, dto);
+    }
 }

@@ -5,7 +5,7 @@ import com.sequence.proreviewer.common.error.ErrorCode;
 
 public class InvalidAuthorizationCodeException extends BaseCustomException {
 
-	public InvalidAuthorizationCodeException() {
-		super(ErrorCode.INVALID_AUTHORIZATION_CODE);
-	}
+    public InvalidAuthorizationCodeException() {
+        super(ErrorCode.INVALID_AUTHORIZATION_CODE);
+    }
 }

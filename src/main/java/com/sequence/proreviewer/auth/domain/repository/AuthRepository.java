@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface AuthRepository {
 
-	Optional<Auth> findById(Long id);
+    Optional<Auth> findById(Long id);
 
-	Optional<Auth> findByProviderKey(String key);
+    Optional<Auth> findByProviderKey(String key);
 
-	Auth saveAuth(Auth auth);
+    Auth saveAuth(Auth auth);
 }

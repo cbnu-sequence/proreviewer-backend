@@ -18,87 +18,87 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class GoogleOAuth2 extends OAuth2 {
 
-	private final Environment env;
+    private final Environment env;
 
-	@Override
-	ResponseEntity<String> requestAccessToken(
-		String code,
-		HttpEntity<HttpHeaders> headers,
-		String urlTemplate,
-		HashMap<String, String> params
-	) {
-		try {
-			return new RestTemplate().exchange(
-				urlTemplate,
-				HttpMethod.POST,
-				headers,
-				String.class,
-				params
-			);
-		} catch (RestClientException e) {
-			throw new InvalidAuthorizationCodeException();
-		}
-	}
+    @Override
+    ResponseEntity<String> requestAccessToken(
+        String code,
+        HttpEntity<HttpHeaders> headers,
+        String urlTemplate,
+        HashMap<String, String> params
+    ) {
+        try {
+            return new RestTemplate().exchange(
+                urlTemplate,
+                HttpMethod.POST,
+                headers,
+                String.class,
+                params
+            );
+        } catch (RestClientException e) {
+            throw new InvalidAuthorizationCodeException();
+        }
+    }
 
-	@Override
-	ResponseEntity<String> requestUserInfo(
-		String accessToken,
-		HttpEntity<HttpHeaders> headers,
-		String url
-	) {
-		try {
-			return new RestTemplate().exchange(
-				url,
-				HttpMethod.GET,
-				headers,
-				String.class
-			);
-		} catch (RestClientException e) {
-			throw new InvalidAccessTokenException();
-		}
-	}
+    @Override
+    ResponseEntity<String> requestUserInfo(
+        String accessToken,
+        HttpEntity<HttpHeaders> headers,
+        String url
+    ) {
+        try {
+            return new RestTemplate().exchange(
+                url,
+                HttpMethod.GET,
+                headers,
+                String.class
+            );
+        } catch (RestClientException e) {
+            throw new InvalidAccessTokenException();
+        }
+    }
 
-	@Override
-	String createRequestAccessTokenUrlTemplate(String requestUrl) {
-		return UriComponentsBuilder
-			.fromHttpUrl(requestUrl)
-			.queryParam("client_id", "{clientId}")
-			.queryParam("client_secret", "{clientSecret}")
-			.queryParam("code", "{code}")
-			.queryParam("redirect_uri", "{redirectUri}")
-			.queryParam("grant_type", "{grantType}")
-			.encode()
-			.toUriString();
-	}
+    @Override
+    String createRequestAccessTokenUrlTemplate(String requestUrl) {
+        return UriComponentsBuilder
+            .fromHttpUrl(requestUrl)
+            .queryParam("client_id", "{clientId}")
+            .queryParam("client_secret", "{clientSecret}")
+            .queryParam("code", "{code}")
+            .queryParam("redirect_uri", "{redirectUri}")
+            .queryParam("grant_type", "{grantType}")
+            .encode()
+            .toUriString();
+    }
 
-	@Override
-	HashMap<String, String> createRequestAccessTokenParams(String code) {
-		HashMap<String, String> params = new HashMap<>();
-		params.put("clientId", getClientId());
-		params.put("clientSecret", getClientSecret());
-		params.put("code", code);
-		params.put("grantType", env.getProperty("google.grant-type"));
-		params.put("redirectUri", env.getProperty("google.redirect-uri"));
-		return params;
-	}
+    @Override
+    HashMap<String, String> createRequestAccessTokenParams(String code) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("clientId", getClientId());
+        params.put("clientSecret", getClientSecret());
+        params.put("code", code);
+        params.put("grantType", env.getProperty("google.grant-type"));
+        params.put("redirectUri", env.getProperty("google.redirect-uri"));
+        return params;
+    }
 
-	@Override
-	String getAccessTokenRequestUrl() {
-		return env.getProperty("google.access-token.url");
-	}
+    @Override
+    String getAccessTokenRequestUrl() {
+        return env.getProperty("google.access-token.url");
+    }
 
-	@Override
-	String getUserInfoRequestUrl() {
-		return env.getProperty("google.user-api.url");
-	}
+    @Override
+    String getUserInfoRequestUrl() {
+        return env.getProperty("google.user-api.url");
+    }
 
-	@Override
-	String getClientId() {
-		return env.getProperty("google.client-id");
-	}
+    @Override
+    String getClientId() {
+        return env.getProperty("google.client-id");
+    }
 
-	@Override
-	String getClientSecret() {
-		return env.getProperty("google.client-secret");
-	}
+    @Override
+    String getClientSecret() {
+        return env.getProperty("google.client-secret");
+    }
 }

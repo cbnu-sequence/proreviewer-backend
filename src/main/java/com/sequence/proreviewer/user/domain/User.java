@@ -20,46 +20,46 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull
-	private String email;
+    @NotNull
+    private String email;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	private String description;
+    private String description;
 
-	@OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
-	private List<Auth> auths;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Auth> auths;
 
-	@Builder
-	public User(String email) {
-		this.email = email;
-		this.name = UUID.randomUUID().toString();
-	}
+    @Builder
+    public User(String email) {
+        this.email = email;
+        this.name = UUID.randomUUID().toString();
+    }
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public UserResponseDto toResponseDto() {
-		return UserResponseDto.builder()
-			.id(this.id)
-			.email(this.email)
-			.name(this.name)
-			.description(this.description)
-			.build();
-	}
+    public UserResponseDto toResponseDto() {
+        return UserResponseDto.builder()
+            .id(this.id)
+            .email(this.email)
+            .name(this.name)
+            .description(this.description)
+            .build();
+    }
 
-	public void update(UserUpdateRequestDto dto) {
-		this.name = dto.getName();
-		this.description = dto.getDescription();
-	}
+    public void update(UserUpdateRequestDto dto) {
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+    }
 
-	public void withdrawal() {
-		this.auths = null;
-	}
+    public void withdrawal() {
+        this.auths = null;
+    }
 }

@@ -10,12 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	private final HttpLoggingInterceptor httpLoggingInterceptor;
+    private final HttpLoggingInterceptor httpLoggingInterceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry
-			.addInterceptor(httpLoggingInterceptor)
-			.excludePathPatterns("**/");
-	}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry
+            .addInterceptor(httpLoggingInterceptor)
+            .excludePathPatterns("**/");
+    }
 }

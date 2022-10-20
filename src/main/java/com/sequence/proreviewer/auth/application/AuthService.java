@@ -1,5 +1,8 @@
 package com.sequence.proreviewer.auth.application;
 
+import com.sequence.proreviewer.auth.application.oauth2.GithubOAuth2;
+import com.sequence.proreviewer.auth.application.oauth2.GoogleOAuth2;
+import com.sequence.proreviewer.auth.application.oauth2.OAuth2;
 import com.sequence.proreviewer.auth.application.util.JwtProvider;
 import com.sequence.proreviewer.auth.domain.Auth;
 import com.sequence.proreviewer.auth.domain.Provider;
@@ -12,6 +15,7 @@ import com.sequence.proreviewer.user.domain.repository.UserRepository;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,10 +25,13 @@ public class AuthService {
 	private final AuthRepository authRepository;
 	private final UserRepository userRepository;
 	private final JwtProvider jwtProvider;
-	private final OAuth2 oAuth2;
+
+	private final ApplicationContext context;
 
 	public AuthTokens login(Provider provider, LoginRequestDto dto) {
-		UserInfo userInfo = oAuth2.getUserInfo(provider, dto.getCode());
+		OAuth2 oAuth2 = getOAuth2ConcreteClassBean(provider);
+
+		UserInfo userInfo = oAuth2.getUserInfo(dto.getCode());
 
 		User user = getUser(userInfo);
 		if (!isAuthExist(userInfo)) {
@@ -71,5 +78,10 @@ public class AuthService {
 		return optionalAuth.isPresent();
 	}
 
-
+	private OAuth2 getOAuth2ConcreteClassBean(Provider provider) {
+		if (provider == Provider.GITHUB) {
+			return context.getBean(GithubOAuth2.class);
+		}
+		return context.getBean(GoogleOAuth2.class);
+	}
 }

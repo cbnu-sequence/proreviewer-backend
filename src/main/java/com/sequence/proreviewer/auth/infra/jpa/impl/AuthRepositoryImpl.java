@@ -11,19 +11,19 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class AuthRepositoryImpl implements AuthRepository {
 
-	private final JpaAuthRepository authRepository;
+    private final JpaAuthRepository authRepository;
 
-	public Optional<Auth> findById(Long id) {
-		return authRepository.findById(id);
-	}
+    public Optional<Auth> findById(Long id) {
+        return authRepository.findById(id);
+    }
 
-	@Override
-	public Optional<Auth> findByProviderKey(String key) {
-		return authRepository.findByProviderKey(key);
-	}
+    @Override
+    public Optional<Auth> findByProviderKey(String key) {
+        return authRepository.findByProviderKey(key);
+    }
 
-	@Override
-	public Auth saveAuth(Auth auth) {
-		return authRepository.save(auth);
-	}
+    @Override
+    public Auth saveAuth(Auth auth) {
+        return authRepository.save(auth);
+    }
 }

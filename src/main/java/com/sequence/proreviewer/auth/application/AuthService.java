@@ -22,66 +22,66 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final AuthRepository authRepository;
-	private final UserRepository userRepository;
-	private final JwtProvider jwtProvider;
+    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
-	private final ApplicationContext context;
+    private final ApplicationContext context;
 
-	public AuthTokens login(Provider provider, LoginRequestDto dto) {
-		OAuth2 oAuth2 = getOAuth2ConcreteClassBean(provider);
+    public AuthTokens login(Provider provider, LoginRequestDto dto) {
+        OAuth2 oAuth2 = getOAuth2ConcreteClassBean(provider);
 
-		UserInfo userInfo = oAuth2.getUserInfo(dto.getCode());
+        UserInfo userInfo = oAuth2.getUserInfo(dto.getCode());
 
-		User user = getUser(userInfo);
-		if (!isAuthExist(userInfo)) {
-			createAuth(user, userInfo, provider);
-		}
+        User user = getUser(userInfo);
+        if (!isAuthExist(userInfo)) {
+            createAuth(user, userInfo, provider);
+        }
 
-		return AuthTokens.builder()
-			.accessToken(createAccessToken(user.getId()))
-			.refreshToken(createRefreshToken())
-			.build();
-	}
+        return AuthTokens.builder()
+            .accessToken(createAccessToken(user.getId()))
+            .refreshToken(createRefreshToken())
+            .build();
+    }
 
-	private String createAccessToken(Long userId) {
-		return jwtProvider.accessToken(String.valueOf(userId));
-	}
+    private String createAccessToken(Long userId) {
+        return jwtProvider.accessToken(String.valueOf(userId));
+    }
 
-	private String createRefreshToken() {
-		return UUID.randomUUID().toString();
-	}
+    private String createRefreshToken() {
+        return UUID.randomUUID().toString();
+    }
 
-	private void createAuth(User user, UserInfo userInfo, Provider provider) {
-		Auth auth = Auth.builder()
-			.user(user)
-			.providerKey(userInfo.getProviderKey())
-			.provider(provider)
-			.build();
-		authRepository.saveAuth(auth);
-	}
+    private void createAuth(User user, UserInfo userInfo, Provider provider) {
+        Auth auth = Auth.builder()
+            .user(user)
+            .providerKey(userInfo.getProviderKey())
+            .provider(provider)
+            .build();
+        authRepository.saveAuth(auth);
+    }
 
-	private User getUser(UserInfo userInfo) {
-		Optional<User> optionalUser = userRepository.findByEmail(userInfo.getEmail());
-		return optionalUser.orElseGet(() -> createUser(userInfo));
-	}
+    private User getUser(UserInfo userInfo) {
+        Optional<User> optionalUser = userRepository.findByEmail(userInfo.getEmail());
+        return optionalUser.orElseGet(() -> createUser(userInfo));
+    }
 
-	private User createUser(UserInfo userInfo) {
-		User user = User.builder()
-			.email(userInfo.getEmail())
-			.build();
-		return userRepository.save(user);
-	}
+    private User createUser(UserInfo userInfo) {
+        User user = User.builder()
+            .email(userInfo.getEmail())
+            .build();
+        return userRepository.save(user);
+    }
 
-	private boolean isAuthExist(UserInfo userInfo) {
-		Optional<Auth> optionalAuth = authRepository.findByProviderKey(userInfo.getId());
-		return optionalAuth.isPresent();
-	}
+    private boolean isAuthExist(UserInfo userInfo) {
+        Optional<Auth> optionalAuth = authRepository.findByProviderKey(userInfo.getId());
+        return optionalAuth.isPresent();
+    }
 
-	private OAuth2 getOAuth2ConcreteClassBean(Provider provider) {
-		if (provider == Provider.GITHUB) {
-			return context.getBean(GithubOAuth2.class);
-		}
-		return context.getBean(GoogleOAuth2.class);
-	}
+    private OAuth2 getOAuth2ConcreteClassBean(Provider provider) {
+        if (provider == Provider.GITHUB) {
+            return context.getBean(GithubOAuth2.class);
+        }
+        return context.getBean(GoogleOAuth2.class);
+    }
 }

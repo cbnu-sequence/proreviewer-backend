@@ -19,25 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-	private final UserService userService;
+    private final UserService userService;
 
-	@GetMapping()
-	public List<UserResponseDto> findAll() {
-		return userService.findAll();
-	}
+    @GetMapping()
+    public List<UserResponseDto> findAll() {
+        return userService.findAll();
+    }
 
-	@GetMapping("/{id}")
-	public UserResponseDto findById(@PathVariable Long id) {
-		return userService.findById(id);
-	}
+    @GetMapping("/{id}")
+    public UserResponseDto findById(@PathVariable Long id) {
+        return userService.findById(id);
+    }
 
-	@PutMapping("/{id}")
-	public void updateById(@PathVariable Long id, @RequestBody UserUpdateRequestDto dto) {
-		userService.updateById(id, dto);
-	}
+    @PutMapping("/{id}")
+    public void updateById(@PathVariable Long id, @RequestBody UserUpdateRequestDto dto) {
+        userService.updateById(id, dto);
+    }
 
-	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id) {
-		userService.deleteById(id);
-	}
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        userService.deleteById(id);
+    }
 }

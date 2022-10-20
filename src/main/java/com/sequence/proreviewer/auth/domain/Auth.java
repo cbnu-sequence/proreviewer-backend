@@ -18,25 +18,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Auth {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@NotNull
-	private String providerKey;
+    @NotNull
+    private String providerKey;
 
-	@Enumerated(EnumType.STRING)
-	@NotNull
-	private Provider provider;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Provider provider;
 
-	@Builder
-	public Auth(User user, String providerKey, Provider provider) {
-		this.user = user;
-		this.providerKey = providerKey;
-		this.provider = provider;
-	}
+    @Builder
+    public Auth(User user, String providerKey, Provider provider) {
+        this.user = user;
+        this.providerKey = providerKey;
+        this.provider = provider;
+    }
 }

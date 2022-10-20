@@ -12,30 +12,30 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-	private final JpaUserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
-	@Override
-	public List<User> findAll() {
-		return userRepository.findAll();
-	}
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-	@Override
-	public Optional<User> findById(Long id) {
-		return userRepository.findById(id);
-	}
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 
-	@Override
-	public Optional<User> findByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-	@Override
-	public User save(User user) {
-		return userRepository.save(user);
-	}
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 
-	@Override
-	public void deleteById(Long id) {
-		userRepository.deleteById(id);
-	}
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }

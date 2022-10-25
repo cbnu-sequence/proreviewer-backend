@@ -1,7 +1,5 @@
 package com.sequence.proreviewer.auth.application;
 
-import com.sequence.proreviewer.auth.application.oauth2.GithubOAuth2;
-import com.sequence.proreviewer.auth.application.oauth2.GoogleOAuth2;
 import com.sequence.proreviewer.auth.application.oauth2.OAuth2;
 import com.sequence.proreviewer.auth.application.util.JwtProvider;
 import com.sequence.proreviewer.auth.domain.Auth;
@@ -79,9 +77,6 @@ public class AuthService {
     }
 
     private OAuth2 getOAuth2ConcreteClassBean(Provider provider) {
-        if (provider == Provider.GITHUB) {
-            return context.getBean(GithubOAuth2.class);
-        }
-        return context.getBean(GoogleOAuth2.class);
+        return context.getBean(provider.getOAuth2ConcreteClass());
     }
 }

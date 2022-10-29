@@ -19,10 +19,14 @@ public class CachingWrappersFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
+        HttpServletRequest filteredRequest = request;
+        HttpServletResponse filteredResponse = response;
+
         if (!isAsyncDispatch(request)) {
-            request = new CachingRequestWrapper(request);
-            response = new CachingResponseWrapper(response);
+            filteredRequest = new CachingRequestWrapper(request);
+            filteredResponse = new CachingResponseWrapper(response);
         }
-        filterChain.doFilter(request, response);
+
+        filterChain.doFilter(filteredRequest, filteredResponse);
     }
 }

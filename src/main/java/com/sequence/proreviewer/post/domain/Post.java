@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -26,23 +26,19 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String body;
 
-    @NotNull
-    private String userName;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     User user;
 
     @Builder
-    public Post(String title, String body, String user_name, User user){
-        this.title=title;
-        this.body=body;
-        this.userName=user_name;
-        this.user=user;
+    public Post(String title, String body, User user) {
+        this.title = title;
+        this.body = body;
+        this.user = user;
     }
 
-    public void updatePost(PostUpdateDto dto){
-        this.title= dto.getTitle();
-        this.body=dto.getBody();
+    public void updatePost(PostUpdateDto dto) {
+        this.title = dto.getTitle();
+        this.body = dto.getBody();
     }
 }

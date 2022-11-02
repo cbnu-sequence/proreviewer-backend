@@ -5,7 +5,7 @@ import com.sequence.proreviewer.common.error.ErrorCode;
 
 public class PostNotFoundException extends BaseCustomException {
 
-    public PostNotFoundException(){
+    public PostNotFoundException() {
         super(ErrorCode.POST_NOT_FOUND);
     }
 }

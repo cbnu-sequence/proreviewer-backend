@@ -10,23 +10,20 @@ import lombok.*;
 public class PostRequestDto {
     private String title;
     private String body;
-    private String user_name;
     private Long user_id;
     private User user;
 
     @Builder
-    public PostRequestDto(String title, String body, String user_name, Long user_id){
-        this.title=title;
-        this.body=body;
-        this.user_name=user_name;
+    public PostRequestDto(String title, String body, Long user_id) {
+        this.title = title;
+        this.body = body;
         this.user_id = user_id;
     }
 
-    public Post toEntity(){
+    public Post toEntity() {
         Post post = Post.builder()
                 .title(title)
                 .body(body)
-                .user_name(user_name)
                 .user(user)
                 .build();
 

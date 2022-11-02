@@ -13,40 +13,44 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepository {
 
-    private final JpaPostRepository postsRepository;
+    private final JpaPostRepository postRepository;
 
     @Override
-    public void savePost(Post post) {
-        postsRepository.save(post);
+    public void save(Post post) {
+        postRepository.save(post);
     }
 
     @Override
-    public Stream<Post> getAllPosts() {
-        return postsRepository.findAllDesc();
+    public Stream<Post> findAll() {
+        return postRepository.findAllDesc();
     }
 
     @Override
-    public void deletePost(Long id) {
-        postsRepository.delete(postsRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    public void deleteById(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        Post post = optionalPost.orElseThrow(IllegalArgumentException::new);
+
+        postRepository.delete(post);
     }
 
     @Override
     public Optional<Post> findById(Long id) {
-        return postsRepository.findById(id);
+        return postRepository.findById(id);
     }
 
     @Override
     public Stream<Post> findByTitleContaining(String keyword) {
-        return postsRepository.findByTitleContaining(keyword);
+        return postRepository.findByTitleContaining(keyword);
     }
 
     @Override
     public Stream<Post> findByBodyContaining(String keyword) {
-        return postsRepository.findByBodyContaining(keyword);
+        return postRepository.findByBodyContaining(keyword);
     }
 
     @Override
-    public Stream<Post> findByUsernameContaining(String keyword) {
-        return postsRepository.findByUserNameContaining(keyword);
+    public Stream<Post> findByUserId(String keyword) {
+        Long user_id = Long.parseLong(keyword);
+        return postRepository.findByUserId(user_id);
     }
 }

@@ -6,17 +6,17 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface PostRepository {
-    void savePost(Post post);
+    void save(Post post);
 
-    Stream<Post> getAllPosts();
+    Stream<Post> findAll();
 
     Optional<Post> findById(Long id);
 
-    void deletePost(Long id);
+    void deleteById(Long id);
 
     Stream<Post> findByTitleContaining(String keyword);
 
     Stream<Post> findByBodyContaining(String keyword);
 
-    Stream<Post> findByUsernameContaining(String keyword);
+    Stream<Post> findByUserId(String keyword);
 }

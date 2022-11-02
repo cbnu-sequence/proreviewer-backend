@@ -16,5 +16,5 @@ public interface JpaPostRepository extends JpaRepository<Post, Long> {
 
     Stream<Post> findByBodyContaining(String keyword);
 
-    Stream<Post>findByUserNameContaining(String keyword);
+    Stream<Post> findByUserId(Long keyword);
 }

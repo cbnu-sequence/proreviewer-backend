@@ -1,6 +1,5 @@
 package com.sequence.proreviewer.post.service;
 
-import com.sequence.proreviewer.post.common.exception.OperationNotAllowedException;
 import com.sequence.proreviewer.post.common.exception.PostNotFoundException;
 import com.sequence.proreviewer.post.domain.Post;
 import com.sequence.proreviewer.post.dto.PostUpdateDto;
@@ -26,9 +25,9 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional  //post 작성
-    public Long write(PostRequestDto postRequestDto, String email){
+    public Long write(PostRequestDto postRequestDto){
 
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new); //작성자 정보
+        User user = userRepository.findById(postRequestDto.getUser_id()).orElseThrow(UserNotFoundException::new); //작성자 정보
 
         postRequestDto.setUser(user);
 
@@ -67,14 +66,11 @@ public class PostService {
     @Transactional //포스트 수정
     public void editPost(Long id, PostUpdateDto postUpdateDto) {
         Optional<Post> optionalPost = postRepository.findById(id);
-        User user = userRepository.findByEmail(postUpdateDto.getEmail()).orElseThrow(UserNotFoundException::new);
 
         optionalPost.ifPresentOrElse(
                 post -> {
-                    if(post.getUser().getId()==user.getId()) //수정 요청한 유저와 작성자가 같은지 확인
-                        post.updatePost(postUpdateDto);
-                    else
-                        throw new OperationNotAllowedException();},
+                    post.updatePost(postUpdateDto);
+                    },
                 ()->{
                     throw new PostNotFoundException();
                 }
@@ -82,16 +78,13 @@ public class PostService {
     }
 
     @Transactional //포스트 삭제
-    public void deletePost(Long id, String email){
+    public void deletePost(Long id){
         Optional<Post> optionalPost = postRepository.findById(id);
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         optionalPost.ifPresentOrElse(
                 post -> {
-                    if(post.getUser().getId()==user.getId()) //삭제 요청한 유저와 작성자가 같은지 확인
-                        postRepository.deletePost(id);
-                    else
-                        throw new OperationNotAllowedException(); },
+                    postRepository.deletePost(id);
+                },
                     ()->{
                         throw new PostNotFoundException();
                     }

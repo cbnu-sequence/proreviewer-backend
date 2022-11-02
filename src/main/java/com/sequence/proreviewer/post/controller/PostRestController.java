@@ -21,30 +21,23 @@ public class PostRestController {
     }
 
     @GetMapping("/{id}") //게시글 id로 게시글 조회
-    public PostResponseDto findById(@PathVariable Long id /*로그인 유저 정보*/){
-        PostResponseDto postResponseDto = postService.findById(id);
-
-//        if(user.getId()==postResponseDto.getId()){
-//            postResponseDto.setWriter(true);
-//        } //게시글 조회시 유저 정보 가져와서 작성자이면 true로 변경
-
-        return postResponseDto;
+    public PostResponseDto findById(@PathVariable Long id){
+        return postService.findById(id);
     }
 
     @PostMapping("/write") //글 작성
-    public void savePost(@RequestBody PostRequestDto dto /*로그인 유저 정보*/){
-        postService.write(dto, "email"); //email 주소 입력
+    public void savePost(@RequestBody PostRequestDto dto){
+        postService.write(dto);
     }
 
     @PutMapping("/edit/{id}") //게시글 수정
-    public void editPost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto /*, 로그인 유저 정보*/){
-        postUpdateDto.setEmail("email"); //현재 로그인된 유저 이메일 주소
+    public void editPost(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto){
         postService.editPost(id, postUpdateDto);
     }
 
     @DeleteMapping("/delete/{id}") //게시글 삭제
-    public void deletePost(@PathVariable Long id /*, 로그인 유저 정보*/){
-        postService.deletePost(id, "email"); //email 주소 입력
+    public void deletePost(@PathVariable Long id){
+        postService.deletePost(id);
     }
 
     @GetMapping("/search")

@@ -13,7 +13,7 @@ public class PostRequestDto {
     private User user;
 
     @Builder
-    public PostRequestDto(String title, String body, Long user_id) {
+    public PostRequestDto(String title, String body) {
         this.title = title;
         this.body = body;
     }

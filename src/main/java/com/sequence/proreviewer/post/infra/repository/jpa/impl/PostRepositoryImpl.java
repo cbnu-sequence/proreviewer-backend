@@ -50,7 +50,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Stream<Post> findByUserId(String keyword) {
-        Long user_id = Long.parseLong(keyword);
-        return postRepository.findByUserId(user_id);
+        Long userId = Long.parseLong(keyword);
+        return postRepository.findByUserId(userId);
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor()
 public class PostResponseDto {
     private Long id;
-    private Long user_id;
+    private Long userId;
     private String title;
     private String body;
     private LocalDateTime created_at;
@@ -23,7 +23,7 @@ public class PostResponseDto {
         User user = entity.getUser();
 
         this.id = entity.getId();
-        this.user_id = user.getId();
+        this.userId = user.getId();
         this.title = entity.getTitle();
         this.body = entity.getBody();
         this.created_at = entity.getCreated_at();

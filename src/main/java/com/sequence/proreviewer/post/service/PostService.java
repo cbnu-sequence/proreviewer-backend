@@ -28,9 +28,9 @@ public class PostService {
     @Transactional
     public Long write(PostRequestDto postRequestDto) {
 
-        Long user_id = 0L; //spring security 에서 받아올 예정
+        Long userId = 0L; //spring security 에서 받아올 예정
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new); //작성자 정보
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new); //작성자 정보
 
         postRequestDto.setUser(user);
 

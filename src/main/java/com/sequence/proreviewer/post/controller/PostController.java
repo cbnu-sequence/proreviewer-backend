@@ -28,7 +28,7 @@ public class PostController {
 
     @PostMapping("/write")
     public void savePost(@RequestBody PostRequestDto dto) {
-        postService.write(dto);
+        postService.write(dto, 0L); //추후에 spring security를 통해 userId를 가져올 예정입니다
     }
 
     @PutMapping("/edit/{id}")

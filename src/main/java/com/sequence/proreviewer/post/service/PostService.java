@@ -40,7 +40,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> findAllPosts() {
+    public List<PostResponseDto> findAll() {
 
         List<PostResponseDto> postResponseDtoList;
 
@@ -64,7 +64,7 @@ public class PostService {
     }
 
     @Transactional
-    public void editPost(Long id, PostUpdateDto postUpdateDto) {
+    public void edit(Long id, PostUpdateDto postUpdateDto) {
         Optional<Post> optionalPost = postRepository.findById(id);
 
         optionalPost.ifPresentOrElse(
@@ -78,7 +78,7 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Long id) {
+    public void delete(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
 
         optionalPost.ifPresentOrElse(
@@ -92,7 +92,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> searchPost(SearchType type, String keyword) {
+    public List<PostResponseDto> search(SearchType type, String keyword) {
 
         Stream<Post> postStream;
 

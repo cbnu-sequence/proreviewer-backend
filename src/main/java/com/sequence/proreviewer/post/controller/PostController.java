@@ -18,7 +18,7 @@ public class PostController {
 
     @GetMapping
     public List<PostResponseDto> findAll() {
-        return postService.findAllPosts();
+        return postService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -33,17 +33,17 @@ public class PostController {
 
     @PutMapping("/edit/{id}")
     public void edit(@PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
-        postService.editPost(id, postUpdateDto);
+        postService.edit(id, postUpdateDto);
     }
 
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {
-        postService.deletePost(id);
+        postService.delete(id);
     }
 
     @GetMapping("/search")
     public List<PostResponseDto> search(@RequestParam("type") SearchType type,
                                         @RequestParam("keyword") String keyword) {
-        return postService.searchPost(type, keyword);
+        return postService.search(type, keyword);
     }
 }

@@ -46,7 +46,7 @@ public class PostService {
 
         try (Stream<Post> postStream = postRepository.findAll()) {
             postResponseDtoList = postStream
-                    .map(PostResponseDto::new)
+                    .map(PostResponseDto::fromEntity)
                     .collect(Collectors.toList());
         }
 
@@ -58,9 +58,7 @@ public class PostService {
         Optional<Post> optionalPost = postRepository.findById(id);
         Post post = optionalPost.orElseThrow(PostNotFoundException::new);
 
-        return PostResponseDto.builder()
-                .entity(post)
-                .build();
+        return PostResponseDto.fromEntity(post);
     }
 
     @Transactional
@@ -112,7 +110,7 @@ public class PostService {
 
         try (postStream) {
             return postStream
-                    .map(PostResponseDto::new)
+                    .map(PostResponseDto::fromEntity)
                     .collect(Collectors.toList());
         }
     }

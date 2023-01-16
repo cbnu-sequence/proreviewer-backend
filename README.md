@@ -4,6 +4,22 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ed529349765a4a63ba8822375531a78b)](https://www.codacy.com/gh/ckyeon/proreviewer-backend/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ckyeon/proreviewer-backend&amp;utm_campaign=Badge_Grade)
 [![CI](https://github.com/cbnu-sequence/proreviewer-backend/actions/workflows/push-dev-docker-image.yml/badge.svg)](https://github.com/cbnu-sequence/proreviewer-backend/actions/workflows/push-dev-docker-image.yml)
 
+## Convention
+
+### Language
+[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+
+### Branch
+```
+<type>/<issue number>
+
+ex) features/#37  refactors/#40  docs/#91
+```
+
+### Commit
+[AngularJS Git Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
+
+
 ## 실행 방법
 
 ### Common
